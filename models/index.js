@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import Book from './book.js';
 import Category from './category.js';
 import Author from './author.js'
+import User from './user.js'
 dotenv.config();
 
 const sequelize = new Sequelize(
@@ -19,6 +20,7 @@ const sequelize = new Sequelize(
 const BookModel = Book(sequelize, Sequelize);
 const CategoryModel = Category(sequelize, Sequelize);
 const AuthorModel = Author(sequelize, Sequelize);
+const UserModel = User(sequelize, Sequelize);
 
   
 
@@ -28,7 +30,7 @@ const db = {
   BookModel,
   CategoryModel,
   AuthorModel,
-  
+  UserModel,
 };
 
 
