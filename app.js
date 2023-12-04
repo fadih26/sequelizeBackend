@@ -17,12 +17,17 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors("*"));
 app.use(cookieParser());
+const corsOptions = {
+    origin: 'http://localhost:3000', // Allow only your frontend origin
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+};
 
+app.use(cors(corsOptions));
 
 app.use("/books",BookRoutes)
-app.use("/user",AuthRoutes)
+app.use("/api/auth",AuthRoutes)
 
 
 app.listen(port, async () => {

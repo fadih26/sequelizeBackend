@@ -16,6 +16,7 @@ export default (sequelize) => {
       validate: { isEmail: true },
     },
     password: DataTypes.STRING,
+    role: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'User',

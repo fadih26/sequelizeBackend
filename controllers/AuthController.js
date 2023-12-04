@@ -2,7 +2,7 @@ import db from '../models/index.js';
 import { generateToken } from '../utils/jwt.js';
 const {UserModel} = db
 export const signup = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password,role } = req.body;
     try {
         // Check if user already exists
         const existingUser = await UserModel.findOne({ where: { email } });
@@ -11,13 +11,9 @@ export const signup = async (req, res) => {
         }
 
         // Create new user
-        const user = await UserModel.create({ name, email, password });
+        const user = await UserModel.create({ name, email, password,role });
 
-        // Generate JWT token
-        const token = generateToken(user);
-
-        // Set token in HTTP-only cookie
-        res.cookie('token', token, { httpOnly: true, sameSite: 'Strict' });
+   
 
         res.status(201).json({ message: 'User created successfully', user });
     } catch (error) {
@@ -35,10 +31,22 @@ export const login = async (req, res) => {
         const token = generateToken(user);
 
         // Set token in HTTP-only cookie
-        res.cookie('token', token, { httpOnly: true, sameSite: 'Strict' });
+        res.cookie('token', token, { httpOnly: true,secure: true,
+        sameSite: 'None',}).json({status:200, message: 'Login successful'}).status(200)
         
-        res.json({ message: 'Login successful', user });
+       
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const loggedInUser = (req,res) =>{
+
+        res.json({ user: req.user });
+   
+}
+
+export const logout = async (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json({message:'Logged out'});
+}
